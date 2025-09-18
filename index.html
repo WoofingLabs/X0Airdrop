@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="X0Airdrop: 在X Layer区块链上进行X0代币充值和空投。使用MetaMask连接钱包进行操作。">
+    <meta name="keywords" content="X0Airdrop, 代币空投, X Layer, 区块链, Web3, 加密货币">
+    <meta name="robots" content="index, follow">
+    <title>X0Airdrop - 代币充值与空投</title>
+    <link rel="icon" href="https://woofingjace.com/images/jace.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #121212;
+            color: #E6E6E6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #1A1A1A;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+        }
+        h1 {
+            text-align: center;
+            color: #00FFC8;
+            font-size: clamp(1.8em, 5vw, 2.5em);
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .logo {
+            width: 100px;
+            height: 50px;
+            object-fit: contain;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .button {
+            background: #333333;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .button:hover {
+            background: #00FFC8;
+            color: #000000;
+            transform: translateY(-2px);
+        }
+        .button:disabled {
+            background: #444444;
+            color: #777777;
+            cursor: not-allowed;
+        }
+        .section {
+            background: #222222;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #cccccc;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #00FFC8;
+            font-size: clamp(1.2em, 3.5vw, 1.6em);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        label {
+            display: block;
+            font-size: 0.9rem;
+            color: #BBBBBB;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            background: #2A2A2A;
+            color: #E6E6E6;
+            font-size: 0.9rem;
+        }
+        input::placeholder {
+            color: #666666;
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 200, 0.4);
+        }
+        .status {
+            font-size: 0.85rem;
+            color: #FF5252;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .wallet-info {
+            color: #BBBBBB;
+            font-weight: 600;
+            word-break: break-all;
+        }
+        .output-box {
+            background: #2A2A2A;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            word-break: break-all;
+            font-size: 0.9rem;
+            color: #E6E6E6;
+        }
+        .output-box label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #BBBBBB;
+        }
+        .how-it-works {
+            background: #222222;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #cccccc;
+            margin-top: 20px;
+        }
+        .how-it-works ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        .how-it-works li {
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+        .how-it-works .highlight {
+            color: #00FFC8;
+            font-weight: 600;
+        }
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #666666;
+        }
+        .footer a {
+            color: #00FFC8;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            .header { flex-direction: column; align-items: center; }
+            .logo { width: 80px; height: 40px; }
+            .button { width: 100%; padding: 12px; margin: 8px 0; font-size: 0.8rem; }
+            .section, .how-it-works { padding: 15px; }
+            h2 { font-size: 1.1rem; }
+            input { font-size: 0.8rem; padding: 8px; }
+            .status, .output-box, .how-it-works li { font-size: 0.75rem; }
+            .how-it-works ul { padding-left: 15px; }
+            .footer { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>X0Airdrop - 代币充值与空投</h1>
+        <div class="header">
+            <img src="https://woofingjace.com/images/jace.png" alt="X0Airdrop" class="logo">
+            <div class="nav-buttons">
+                <button id="connectWallet" class="button">连接钱包</button>
+            </div>
+        </div>
+        <div class="content">
+            <div id="status" class="status"></div>
+            <div class="section">
+                <h2>钱包状态</h2>
+                <div id="walletStatus" class="wallet-info">未连接</div>
+            </div>
+            <div class="section" id="depositSection">
+                <h2>充值X0代币</h2>
+                <div class="output-box">
+                    <label>X0代币地址</label>
+                    <span id="tokenAddress">0x428dC4b69A05C128966f2A03693dEAac409F1EC5</span>
+                </div>
+                <div class="output-box">
+                    <label>钱包余额</label>
+                    <span id="tokenBalance">请连接钱包以查看余额</span>
+                </div>
+                <input type="number" id="depositAmount" placeholder="充值数量" min="0" step="any">
+                <button id="depositToken" class="button" disabled>充值代币</button>
+                <div class="output-box">
+                    <label>合约地址</label>
+                    <span id="contractAddress">0xc6F393ee1E22917F395A872F06c66A4b493505E4</span>
+                </div>
+                <button id="copyAddressButton" class="button">复制合约地址</button>
+                <div id="depositStatus" class="status"></div>
+            </div>
+            <div class="section" id="airdropSection">
+                <h2>执行空投</h2>
+                <button id="airdropToken" class="button" disabled>执行空投</button>
+                <div id="airdropStatus" class="status"></div>
+            </div>
+            <div class="how-it-works">
+                <h2>如何操作？</h2>
+                <p>在X Layer上使用X0Airdrop进行代币充值和空投！</p>
+                <ul>
+                    <li><strong>连接钱包</strong>：使用MetaMask连接到X Layer（链ID：196）。确保有足够的<span class="highlight">OKB</span>支付 gas 费用。</li>
+                    <li><strong>检查余额</strong>：连接钱包后可查看X0代币余额。</li>
+                    <li><strong>充值代币</strong>：输入充值数量，点击“充值代币”。如需授权，会自动处理授权流程。</li>
+                    <li><strong>执行空投</strong>：确保合约有足够余额后，点击“执行空投”向200个随机地址分发0.005 X0代币。</li>
+                </ul>
+            </div>
+            <div class="footer">
+                <p>由 <a href="https://www.okx.com/web3/explorer/xlayer" target="_blank">X Layer</a> 提供支持 | X0Airdrop © 2025</p>
+                <p>非财务建议，请自行研究！</p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
+    <script>
+        let web3, accounts, airdropContract;
+        const contractInfo = {
+            address: '0xc6F393ee1E22917F395A872F06c66A4b493505E4',
+            tokenAddress: '0x428dC4b69A05C128966f2A03693dEAac409F1EC5',
+            currency: 'OKB'
+        };
+
+        const airdropContractABI = [
+            {"inputs":[{"internalType":"address","name":"token","type":"address"}],"name":"emergencyWithdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[],"name":"airdrop","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[],"name":"emergencyWithdrawETH","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"recipient","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Airdrop","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Deposit","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"token","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdraw","type":"event"},
+            {"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"EmergencyWithdrawETH","type":"event"},
+            {"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"airdropCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"AIRDROP_AMOUNT","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"AIRDROP_ADDRESSES","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},
+            {"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},
+            {"inputs":[],"name":"X0_TOKEN","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}
+        ];
+
+        const erc20ABI = [
+            {"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+            {"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}
+        ];
+
+        const xLayer = { chainId: 196, name: 'X Layer 主网', explorerUrl: 'https://www.okx.com/web3/explorer/xlayer', rpcUrl: 'https://rpc.xlayer.tech' };
+
+        async function connectWallet() {
+            const status = document.getElementById('walletStatus');
+            try {
+                if (!window.ethereum) {
+                    status.innerHTML = '未检测到钱包，请安装 <a href="https://metamask.io" target="_blank">MetaMask</a>。';
+                    throw new Error("未检测到钱包");
+                }
+                status.innerText = "连接中...";
+                web3 = new Web3(window.ethereum);
+                accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                if (!accounts.length) throw new Error("请解锁钱包或连接钱包");
+                const chainId = await web3.eth.getChainId();
+                if (chainId !== 196) {
+                    try {
+                        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0xc4' }] });
+                    } catch (switchError) {
+                        if (switchError.code === 4902) {
+                            await window.ethereum.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [{
+                                    chainId: '0xc4',
+                                    chainName: 'X Layer 主网',
+                                    nativeCurrency: { name: 'OKB', symbol: 'OKB', decimals: 18 },
+                                    rpcUrls: ['https://rpc.xlayer.tech'],
+                                    blockExplorerUrls: ['https://www.okx.com/web3/explorer/xlayer']
+                                }]
+                            });
+                        } else throw switchError;
+                    }
+                }
+                document.getElementById('walletStatus').innerText = `已连接: ${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
+                airdropContract = new web3.eth.Contract(airdropContractABI, contractInfo.address);
+                document.getElementById('status').innerText = "已连接到X Layer";
+                await checkBalance();
+                document.getElementById('airdropToken').disabled = false;
+            } catch (error) {
+                console.error(error);
+                status.innerText = "连接失败: " + error.message;
+            }
+        }
+
+        async function checkBalance() {
+            const balanceDisplay = document.getElementById('tokenBalance');
+            const depositButton = document.getElementById('depositToken');
+            try {
+                const tokenContract = new web3.eth.Contract(erc20ABI, contractInfo.tokenAddress);
+                const balance = await tokenContract.methods.balanceOf(accounts[0]).call();
+                balanceDisplay.textContent = `余额: ${web3.utils.fromWei(balance, 'ether')} X0`;
+                depositButton.disabled = false;
+            } catch (error) {
+                console.error(error);
+                balanceDisplay.textContent = "无法获取余额: " + error.message;
+                depositButton.disabled = true;
+            }
+        }
+
+        async function depositToken() {
+            const section = document.getElementById('depositSection');
+            const status = document.getElementById('depositStatus');
+            const amount = document.getElementById('depositAmount').value.trim();
+
+            if (!accounts) {
+                status.textContent = "请先连接钱包！";
+                return;
+            }
+            if (!amount || parseFloat(amount) <= 0) {
+                status.textContent = "请输入有效的充值数量。";
+                return;
+            }
+
+            try {
+                section.classList.add('loading');
+                status.textContent = "检查授权...";
+                const tokenContract = new web3.eth.Contract(erc20ABI, contractInfo.tokenAddress);
+                const amountWei = web3.utils.toWei(amount, 'ether');
+                const allowance = await tokenContract.methods.allowance(accounts[0], contractInfo.address).call();
+                const maxAllowance = BigInt(2) ** BigInt(256) - BigInt(1);
+
+                if (BigInt(allowance) < BigInt(amountWei)) {
+                    status.textContent = "正在授权代币...";
+                    const gasApprove = await tokenContract.methods.approve(contractInfo.address, maxAllowance).estimateGas({ from: accounts[0] }).catch(() => 100000);
+                    await tokenContract.methods.approve(contractInfo.address, maxAllowance).send({ from: accounts[0], gas: Math.floor(gasApprove * 1.2) });
+                    status.textContent = "授权成功，正在充值...";
+                } else {
+                    status.textContent = "正在充值代币...";
+                }
+
+                const gasDeposit = await airdropContract.methods.deposit(amountWei).estimateGas({ from: accounts[0] }).catch(() => 200000);
+                const tx = await airdropContract.methods.deposit(amountWei).send({ from: accounts[0], gas: Math.floor(gasDeposit * 1.2) });
+                status.innerHTML = `充值成功！数量: ${amount} X0 (<a href="${xLayer.explorerUrl}/tx/${tx.transactionHash}" target="_blank">在浏览器查看</a>)`;
+                document.getElementById('depositAmount').value = '';
+                await checkBalance();
+            } catch (error) {
+                console.error(error);
+                status.textContent = "充值失败: " + (error.message.includes('revert') ? error.message.split('revert')[1]?.trim() || '未知原因' : error.message);
+            } finally {
+                section.classList.remove('loading');
+            }
+        }
+
+        async function airdropToken() {
+            const section = document.getElementById('airdropSection');
+            const status = document.getElementById('airdropStatus');
+
+            if (!accounts) {
+                status.textContent = "请先连接钱包！";
+                return;
+            }
+
+            try {
+                section.classList.add('loading');
+                status.textContent = "正在执行空投...";
+                const gas = await airdropContract.methods.airdrop().estimateGas({ from: accounts[0] }).catch(() => 600000);
+                const tx = await airdropContract.methods.airdrop().send({ from: accounts[0], gas: Math.floor(gas * 1.2) });
+                status.innerHTML = `空投成功！(<a href="${xLayer.explorerUrl}/tx/${tx.transactionHash}" target="_blank">在浏览器查看</a>)`;
+            } catch (error) {
+                console.error(error);
+                status.textContent = "空投失败: " + (error.message.includes('revert') ? error.message.split('revert')[1]?.trim() || '余额不足或未知原因' : error.message);
+            } finally {
+                section.classList.remove('loading');
+            }
+        }
+
+        function copyToClipboard() {
+            const status = document.getElementById('depositStatus');
+            const sourceElement = document.getElementById('contractAddress');
+            const textToCopy = sourceElement.textContent;
+
+            const textArea = document.createElement('textarea');
+            textArea.value = textToCopy;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                status.textContent = '合约地址已复制到剪贴板';
+            } catch (error) {
+                console.error('复制失败:', error);
+                status.textContent = '复制合约地址失败，请手动选择复制。';
+            } finally {
+                document.body.removeChild(textArea);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('copyAddressButton').disabled = false;
+            document.getElementById('connectWallet').addEventListener('click', connectWallet);
+            document.getElementById('depositToken').addEventListener('click', depositToken);
+            document.getElementById('airdropToken').addEventListener('click', airdropToken);
+            document.getElementById('copyAddressButton').addEventListener('click', copyToClipboard);
+            document.getElementById('depositAmount').addEventListener('input', () => document.getElementById('depositToken').disabled = false);
+            if (!window.location.protocol.startsWith('http')) document.getElementById('walletStatus').innerHTML = '请通过本地服务器运行此页面（例如 "npx serve"）以连接MetaMask。';
+            else if (!window.ethereum) document.getElementById('walletStatus').innerHTML = '未检测到钱包，请安装 <a href="https://metamask.io">MetaMask</a>。';
+        });
+    </script>
+</body>
+</html>
